@@ -62,11 +62,18 @@ static NSObject *ourObserver = nil;
 	if (!observer)
 		return nil;
 
-	NSString* response = [observer performSelector:@selector(runCommandStep:) withObject:(self.multipartData)];
+	NSObject* response = [observer performSelector:@selector(runCommandStep:) withObject:(self.multipartData)];
 	self.multipartData = nil;
 	postContentLength = 0;
 
-	NSData *browseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+	NSData *browseData = NULL;
+	if ([response isKindOfClass:[NSString class]]) {
+		browseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+	} else if ([response isKindOfClass:[NSData class]]) {
+		browseData = (NSData *)response;
+	} else {
+		browseData = [[response description] dataUsingEncoding:NSUTF8StringEncoding];
+	}
 	return [[[HTTPDataResponse alloc] initWithData:browseData] autorelease];
 }
 
