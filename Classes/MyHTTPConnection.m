@@ -56,7 +56,7 @@ static NSObject *ourObserver = nil;
 
 	NSLog(@"processing post data: %i", postContentLength);
 	NSString *contents = [[[NSString alloc] initWithData:(self.multipartData) encoding:NSUTF8StringEncoding] autorelease];
-	NSLog(contents);
+	NSLog(@"%@", contents);
 
 	NSObject *observer = [MyHTTPConnection sharedObserver];
 	if (!observer)
@@ -68,7 +68,7 @@ static NSObject *ourObserver = nil;
 
 	NSData *browseData = NULL;
 	if ([response isKindOfClass:[NSString class]]) {
-		browseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+		browseData = [(NSString*)response dataUsingEncoding:NSUTF8StringEncoding];
 	} else if ([response isKindOfClass:[NSData class]]) {
 		browseData = (NSData *)response;
 	} else {
